@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>小游戏合集 · 10 款</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    min-height:100vh;color:#fff;position:relative;overflow-x:hidden;
+    font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a) fixed;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before,body::after{
+    content:"";position:fixed;border-radius:50%;filter:blur(100px);
+    pointer-events:none;z-index:0
+  }
+  body::before{width:520px;height:520px;background:#22d3ee;opacity:.20;top:-200px;left:-160px}
+  body::after{width:600px;height:600px;background:#6366f1;opacity:.28;bottom:-260px;right:-200px}
+
+  .page{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:46px 20px 64px}
+
+  .hero{text-align:center;margin-bottom:34px}
+  .badge{
+    display:inline-block;margin-bottom:16px;padding:5px 13px;border-radius:999px;
+    font-size:12px;letter-spacing:1.5px;
+    background:rgba(34,211,238,.14);border:1px solid rgba(34,211,238,.35);color:#a5f3fc
+  }
+  .hero h1{
+    margin:0 0 12px;font-size:clamp(26px,5.2vw,42px);letter-spacing:.5px;line-height:1.2;
+    background:linear-gradient(90deg,#ffffff,#a5f3fc 55%,#7dd3fc);
+    -webkit-background-clip:text;background-clip:text;color:transparent
+  }
+  .hero p{margin:0;font-size:14.5px;color:#c7d2fe;opacity:.82}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+
+  .card{
+    position:relative;display:flex;flex-direction:column;gap:12px;
+    padding:18px;border-radius:18px;text-align:left;font-family:inherit;color:#fff;
+    background:rgba(15,23,42,.72);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 12px 36px rgba(2,6,23,.45);
+    cursor:pointer;overflow:hidden;
+    transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease
+  }
+  .card::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(130% 95% at 100% 0%,var(--tint),transparent 62%)
+  }
+  .card>*{position:relative;z-index:1}
+  .card:hover,.card:focus-visible{
+    transform:translateY(-4px);border-color:var(--c);outline:none;
+    box-shadow:0 18px 44px rgba(2,6,23,.6),0 0 26px -6px var(--c)
+  }
+  .card:active{transform:translateY(-1px) scale(.995)}
+
+  .row{display:flex;align-items:center;gap:10px}
+  .ico{
+    width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+    font-size:23px;line-height:1;background:var(--tile);border:1px solid rgba(255,255,255,.12)
+  }
+  .no{margin-left:auto;font-size:12px;letter-spacing:1.5px;color:#8fa3c4;font-variant-numeric:tabular-nums}
+  .name{display:block;font-size:17px;font-weight:700;letter-spacing:.3px;line-height:1.35}
+  .desc{display:block;font-size:13px;line-height:1.62;color:#a9b8d4}
+  .go{
+    margin-top:auto;align-self:flex-start;padding:7px 15px;border-radius:999px;
+    background:var(--c);color:#0b1220;font-size:12.5px;font-weight:800;letter-spacing:.5px
+  }
+
+  .foot{margin-top:36px;text-align:center;font-size:12.5px;color:#8fa3c4;line-height:1.9}
+  .foot b{color:#a5f3fc;font-weight:600}
+
+  .overlay{
+    position:fixed;inset:0;z-index:100;display:none;flex-direction:column;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a)
+  }
+  .overlay.on{display:flex}
+  .bar{
+    flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;
+    background:rgba(15,23,42,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(255,255,255,.09)
+  }
+  .bar .t{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .sp{flex:1}
+  .btn{
+    padding:8px 14px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;
+    border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;
+    cursor:pointer;transition:.18s;white-space:nowrap
+  }
+  .btn:hover{background:rgba(255,255,255,.17);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  #stage{flex:1;width:100%;border:0;display:block}
+  @media (max-width:520px){
+    .page{padding:34px 16px 52px}
+    .bar .t{font-size:14px}
+    .btn{padding:7px 11px;font-size:12.5px}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="hero">
+    <span class="badge">MINI GAMES · 共 10 款</span>
+    <h1>小游戏合集</h1>
+    <p>挑一个开始玩吧 · 点卡片即可进入，游戏内左上角可以随时返回</p>
+  </div>
+  <main class="grid" id="grid"></main>
+  <div class="foot">
+    所有游戏都在本页内运行，最高分、扭蛋次数等记录会自动保存<br>
+    建议用 Chrome / Edge / Safari 打开
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="bar">
+    <button class="btn" id="back">← 返回列表</button>
+    <div class="t" id="ovTitle"></div>
+    <div class="sp"></div>
+    <button class="btn" id="fs">全屏</button>
+  </div>
+  <iframe id="stage" title="游戏" allow="clipboard-write"></iframe>
+</div>
+
+<script type="text/plain" id="src-01">
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>反应力挑战</title>
+  <style>
+    body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+    .card{width:min(520px,92vw);padding:22px;border-radius:16px;background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);text-align:center}
+    #box{height:180px;border-radius:12px;display:grid;place-items:center;margin:14px 0;font-size:24px;font-weight:bold;background:#3a406b}
+    button{padding:10px 18px;border:0;border-radius:10px;background:#3b82f6;color:#fff;cursor:pointer;transition:.2s transform,.2s opacity}
+    button:hover{opacity:.92;transform:translateY(-1px)}
+    @media (max-width:520px){#box{height:150px;font-size:20px}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>反应力挑战</h2>
+    <p>等方块变绿后立即点击，测试你的反应速度。</p>
+    <div id="box">点击“开始”</div>
+    <button id="start">开始</button>
+    <p id="result"></p>
+    <p id="best">最佳成绩：--</p>
+  </div>
+  <script>
+    const box=document.getElementById('box'),start=document.getElementById('start'),result=document.getElementById('result');
+    const bestEl=document.getElementById('best');
+    let t=0,ready=false,timeout=0;
+    let best=+localStorage.getItem('reaction_best_ms')||0;
+    bestEl.textContent='最佳成绩：'+(best?best+'ms':'--');
+    start.onclick=()=>{
+      clearTimeout(timeout);ready=false;result.textContent='';
+      box.style.background='#c0392b';box.textContent='准备...';
+      t=performance.now()+1000+Math.random()*3000;
+      timeout=setTimeout(()=>{ready=true;box.style.background='#27ae60';box.textContent='点我!';t=performance.now();},t-performance.now());
+    };
+    box.onclick=()=>{
+      if(!ready){result.textContent='太快了！等变绿再点。';return;}
+      const ms=Math.round(performance.now()-t);
+      result.textContent=`你的反应时间：${ms}ms ${ms<220?'⚡神级':'👏不错'}`;
+      if(!best||ms<best){
+        best=ms;
+        localStorage.setItem('reaction_best_ms',String(best));
+        bestEl.textContent='最佳成绩：'+best+'ms';
+      }
+      ready=false;box.style.background='#3a406b';box.textContent='再来一次?';
+    };
+    document.addEventListener('keydown',(e)=>{
+      if(e.code==='Space'){
+        e.preventDefault();
+        start.click();
+      }
+    });
+  __SC_END__
+</body>
+</html>
+</script>
+
+<script type="text/plain" id="src-02">
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>翻牌记忆</title>
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+    .wrap{width:min(560px,95vw);text-align:center;background:rgba(15,23,42,.65);padding:20px;border-radius:16px;box-shadow:0 12px 36px rgba(2,6,23,.45)}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+    .c{height:78px;border-radius:10px;background:#2c3e50;display:grid;place-items:center;font-size:28px;cursor:pointer;user-select:none}
+    .open,.done{background:#16a085}
+    @media (max-width:520px){.c{height:66px;font-size:24px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2>翻牌记忆小游戏</h2>
+    <div>步数：<span id="step">0</span> | 配对：<span id="ok">0</span>/8</div>
+    <div>最佳步数：<span id="best">--</span></div>
+    <button id="restart" style="margin-top:8px;padding:8px 12px;border:0;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer">重新开始</button>
+    <div class="grid" id="g"></div>
+  </div>
+  <script>
+    const icons=['🍉','🍒','🍋','🍇','🍓','🥝','🍎','🍑'];
+    const g=document.getElementById('g'),stepEl=document.getElementById('step'),okEl=document.getElementById('ok');
+    const bestEl=document.getElementById('best');
+    let first=null,lock=false,step=0,ok=0,arr=[];
+    let best=+localStorage.getItem('memory_best_step')||0;
+    bestEl.textContent=best||'--';
+    function init(){
+      first=null;lock=false;step=0;ok=0;
+      arr=[...icons,...icons].sort(()=>Math.random()-0.5);
+      stepEl.textContent='0';okEl.textContent='0';
+      g.innerHTML='';
+      arr.forEach((v,i)=>{const d=document.createElement('div');d.className='c';d.dataset.v=v;d.dataset.i=i;d.textContent='?';g.appendChild(d);});
+    }
+    init();
+    g.onclick=e=>{
+      const t=e.target;if(!t.classList.contains('c')||lock||t.classList.contains('done')||t===first)return;
+      t.textContent=t.dataset.v;t.classList.add('open');
+      if(!first){first=t;return;}
+      stepEl.textContent=++step;
+      if(first.dataset.v===t.dataset.v){
+        first.classList.add('done');t.classList.add('done');okEl.textContent=++ok;first=null;
+        if(ok===8){
+          if(!best||step<best){best=step;localStorage.setItem('memory_best_step',String(best));bestEl.textContent=String(best);}
+          setTimeout(()=>alert('你完成了!'),80);
+        }
+        return;
+      }
+      lock=true;setTimeout(()=>{first.textContent='?';t.textContent='?';first.classList.remove('open');t.classList.remove('open');first=null;lock=false;},650);
+    };
+    document.getElementById('restart').onclick=init;
+  __SC_END__
+</body>
+</html>
+</script>
+
+<script type="text/plain" id="src-03">
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>猜数字心理战</title>
+  <style>
+    body{font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;display:grid;place-items:center;min-height:100vh;margin:0}
+    .card{background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);padding:20px;border-radius:14px;width:min(520px,92vw)}
+    input,button{padding:10px;border-radius:8px;border:0} input{width:120px}
+    button{background:#3b82f6;color:#fff;cursor:pointer;margin-left:8px;transition:.2s transform,.2s opacity}
+    button:hover{opacity:.92;transform:translateY(-1px)}
+    #log{margin-top:10px;max-height:220px;overflow:auto;background:#111827;padding:10px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>猜数字心理战</h2>
+    <p>我想了一个 1-100 的数字，你来猜！</p>
+    <input id="n" type="number" min="1" max="100"><button id="go">猜</button><button id="reset">重置</button>
+    <p>最佳局数（最少猜中次数）：<span id="best">--</span></p>
+    <div id="log"></div>
+  </div>
+<script>
+let ans=Math.floor(Math.random()*100)+1,turn=0; const log=document.getElementById('log');
+let low=1,high=100;
+const bestEl=document.getElementById('best');
+let best=+localStorage.getItem('guess_best_turn')||0;
+bestEl.textContent=best||'--';
+const add=s=>log.innerHTML=`<div>${s}</div>`+log.innerHTML;
+document.getElementById('go').onclick=()=>{
+  const v=+n.value;
+  if(v<1||v>100)return;
+  turn++;
+  if(v===ans){
+    add(`第${turn}次：${v}，猜中了！🎉`);
+    if(!best||turn<best){best=turn;localStorage.setItem('guess_best_turn',String(best));bestEl.textContent=String(best);}
+    return;
+  }
+  if(v>ans) high=Math.min(high,v-1);
+  if(v<ans) low=Math.max(low,v+1);
+  const d=Math.abs(v-ans),hint=v>ans?'太大':'太小';
+  add(`第${turn}次：${v}，${hint}，${d<=5?'非常接近🔥':d<=15?'有点接近':'差得有点多'}（建议范围 ${low}-${high}）`);
+};
+document.getElementById('reset').onclick=()=>{ans=Math.floor(Math.random()*100)+1;turn=0;low=1;high=100;log.innerHTML='';add('新局开始！');n.value='';n.focus();};
+document.getElementById('n').addEventListener('keydown',(e)=>{if(e.key==='Enter')document.getElementById('go').click();});
+add('游戏开始。');
+__SC_END__
+</body>
+</html>
+</script>
+
+<script type="text/plain" id="src-04">
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>手速点击王</title>
+<style>
+body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.card{background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);padding:20px;border-radius:14px;text-align:center;width:min(460px,92vw)}
+button{border:0;border-radius:12px;padding:12px 18px;background:#22c55e;color:#062;cursor:pointer;font-weight:700;transition:.2s transform,.2s opacity}
+button:hover{opacity:.92;transform:translateY(-1px)}
+#tap{font-size:20px;background:#fbbf24;color:#111;margin-top:10px}
+</style></head>
+<body><div class="card">
+<h2>手速点击王（10秒）</h2><p>开始后疯狂点按钮，看看你有多快。</p>
+<button id="start">开始挑战</button><br><button id="tap" disabled>点我！</button>
+<p id="s">分数：0</p><p id="t">剩余：10.0s</p>
+<p id="best">历史最高分：--</p>
+</div>
+<script>
+let c=0,time=10,timer=null,run=false;
+const bestEl=document.getElementById('best');
+let best=+localStorage.getItem('tap_best_score')||0;
+bestEl.textContent='历史最高分：'+(best||'--');
+start.onclick=()=>{
+  c=0;time=10;run=true;tap.disabled=false;s.textContent='分数：0';start.disabled=true;
+  timer=setInterval(()=>{
+    time-=0.1;t.textContent='剩余：'+Math.max(0,time).toFixed(1)+'s';
+    if(time<=0){
+      clearInterval(timer);run=false;tap.disabled=true;start.disabled=false;
+      if(c>best){best=c;localStorage.setItem('tap_best_score',String(best));bestEl.textContent='历史最高分：'+best;}
+      alert('结束！得分：'+c);
+    }
+  },100);
+};
+tap.onclick=()=>{if(!run)return;c++;s.textContent='分数：'+c;};
+document.addEventListener('keydown',(e)=>{if(e.key==='Enter'&&!start.disabled)start.click();});
+__SC_END__
+</body></html>
+</script>
+
+<script type="text/plain" id="src-05">
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>躲避小方块</title>
+<style>
+body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+canvas{background:#1f2937;border-radius:10px;box-shadow:0 12px 36px rgba(2,6,23,.45)}
+button{transition:.2s transform,.2s opacity}
+button:hover{opacity:.92;transform:translateY(-1px)}
+@media (max-width:520px){canvas{width:92vw;height:92vw;max-width:420px;max-height:420px}}
+</style></head>
+<body><div><h3>躲避小方块（方向键移动）</h3><canvas id="cv" width="420" height="420"></canvas><p id="p">坚持时间：0.0s</p><p id="best">最佳生存：--</p><button id="restart" style="padding:8px 12px;border:0;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer">重新开始</button></div>
+<script>
+const c=cv.getContext('2d');let me,keys={},en=[],start=performance.now(),over=false;
+const bestEl=document.getElementById('best');
+let best=+localStorage.getItem('dodge_best_s')||0;
+bestEl.textContent='最佳生存：'+(best?best.toFixed(1)+'s':'--');
+function init(){
+  me={x:200,y:200,s:16};en=[];start=performance.now();over=false;
+  for(let i=0;i<9;i++)en.push({x:Math.random()*400,y:Math.random()*400,vx:(Math.random()*4-2)||1,vy:(Math.random()*4-2)||-1,s:14});
+}
+init();
+onkeydown=e=>keys[e.key]=1;onkeyup=e=>keys[e.key]=0;
+function hit(a,b){return Math.abs(a.x-b.x)<(a.s+b.s)/2&&Math.abs(a.y-b.y)<(a.s+b.s)/2}
+function loop(){
+ if(over)return; c.clearRect(0,0,420,420);
+ if(keys.ArrowLeft)me.x-=3;if(keys.ArrowRight)me.x+=3;if(keys.ArrowUp)me.y-=3;if(keys.ArrowDown)me.y+=3;
+ me.x=Math.max(8,Math.min(412,me.x));me.y=Math.max(8,Math.min(412,me.y));
+ c.fillStyle='#22c55e';c.fillRect(me.x-8,me.y-8,16,16);
+ c.fillStyle='#ef4444';
+ for(const e of en){e.x+=e.vx;e.y+=e.vy;if(e.x<7||e.x>413)e.vx*=-1;if(e.y<7||e.y>413)e.vy*=-1;c.fillRect(e.x-7,e.y-7,14,14);if(hit(me,e)){over=true;const s=((performance.now()-start)/1000);if(s>best){best=s;localStorage.setItem('dodge_best_s',String(best));bestEl.textContent='最佳生存：'+best.toFixed(1)+'s';}alert('碰撞！坚持了 '+s.toFixed(1)+' 秒');}}
+ p.textContent='坚持时间：'+((performance.now()-start)/1000).toFixed(1)+'s';
+ requestAnimationFrame(loop);
+}
+loop();
+restart.onclick=()=>{init();requestAnimationFrame(loop);};
+__SC_END__
+</body></html>
+</script>
+
+<script type="text/plain" id="src-06">
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>随机真心话生成器</title>
+<style>
+body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.card{width:min(560px,92vw);background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);padding:22px;border-radius:16px}
+button{padding:10px 16px;border:0;border-radius:10px;background:#f43f5e;color:#fff;cursor:pointer;transition:.2s transform,.2s opacity}
+button:hover{opacity:.92;transform:translateY(-1px)}
+#q{margin:16px 0;font-size:22px;line-height:1.6}
+</style></head>
+<body><div class="card"><h2>随机真心话生成器</h2><div id="q">点击下方按钮抽取问题</div><button id="b">抽一个</button><button id="copy" style="margin-left:8px;background:#0ea5e9">复制这句</button><p id="history"></p></div>
+<script>
+const qs=['最近一次偷偷开心是因为什么？','你最想感谢的人是谁？','你心里最珍贵的回忆是什么？','如果重来一次，你会改变什么？','最让你有安全感的一句话是？','你希望别人怎样记住你？','有什么小愿望还没实现？','你最想去的城市是哪？'];
+let bag=[],last='';
+function drawOne(){
+  if(!bag.length) bag=[...qs].sort(()=>Math.random()-0.5);
+  last=bag.pop()+' ✨';
+  q.textContent=last;
+  const arr=JSON.parse(localStorage.getItem('truth_history')||'[]');
+  arr.unshift(last);
+  localStorage.setItem('truth_history',JSON.stringify(arr.slice(0,5)));
+  history.textContent='最近抽到：'+arr.slice(0,3).join(' | ');
+}
+b.onclick=drawOne;
+copy.onclick=async()=>{
+  if(!last){drawOne();return;}
+  try{await navigator.clipboard.writeText(last);copy.textContent='已复制';setTimeout(()=>copy.textContent='复制这句',900);}catch(e){copy.textContent='复制失败';setTimeout(()=>copy.textContent='复制这句',900);}
+};
+const saved=JSON.parse(localStorage.getItem('truth_history')||'[]');
+if(saved.length) history.textContent='最近抽到：'+saved.slice(0,3).join(' | ');
+__SC_END__
+</body></html>
+</script>
+
+<script type="text/plain" id="src-07">
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>今日运势扭蛋机</title>
+<style>
+body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.card{text-align:center;background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);padding:24px;border-radius:16px;width:min(520px,92vw)}
+.ball{width:140px;height:140px;margin:10px auto;border-radius:50%;display:grid;place-items:center;background:#f59e0b;color:#111;font-weight:700;font-size:20px}
+button{padding:10px 16px;border:0;border-radius:10px;background:#22d3ee;cursor:pointer;transition:.2s transform,.2s opacity}
+button:hover{opacity:.92;transform:translateY(-1px)}
+</style></head>
+<body><div class="card"><h2>今日运势扭蛋机</h2><div class="ball" id="ball">READY</div><button id="go">扭一下</button><p id="r"></p><p id="count">累计扭蛋次数：0</p></div>
+<script>
+const pool=['大吉：今日宜大胆尝试','中吉：稳定发挥就很棒','小吉：会有意外小惊喜','平：按计划推进就好','吉：适合开启新项目','超吉：贵人运拉满'];
+const countEl=document.getElementById('count');
+let count=+localStorage.getItem('fortune_count')||0;
+countEl.textContent='累计扭蛋次数：'+count;
+go.onclick=()=>{
+  ball.textContent='...';
+  setTimeout(()=>{
+    const t=pool[Math.floor(Math.random()*pool.length)];
+    ball.textContent='OPEN';
+    r.textContent=t;
+    count++;
+    localStorage.setItem('fortune_count',String(count));
+    countEl.textContent='累计扭蛋次数：'+count;
+    localStorage.setItem('fortune_last',t);
+  },500);
+};
+const last=localStorage.getItem('fortune_last');
+if(last) r.textContent='上次结果：'+last;
+__SC_END__
+</body></html>
+</script>
+
+<script type="text/plain" id="src-08">
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>颜色节奏挑战</title>
+<style>
+body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.w{text-align:center;width:min(520px,92vw);background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);padding:20px;border-radius:16px} .g{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.p{height:120px;border-radius:12px;opacity:.75;cursor:pointer}
+.on{opacity:1;box-shadow:0 0 0 4px #fff inset}
+button{padding:10px 16px;border:0;border-radius:10px;background:#22d3ee;cursor:pointer;transition:.2s transform,.2s opacity}
+button:hover{opacity:.92;transform:translateY(-1px)}
+</style></head>
+<body><div class="w"><h2>颜色节奏挑战（记忆顺序）</h2><p id="info">按开始</p><button id="st">开始</button><p id="best">最高轮次：--</p>
+<div class="g"><div class="p" data-i="0" style="background:#ef4444"></div><div class="p" data-i="1" style="background:#22c55e"></div><div class="p" data-i="2" style="background:#3b82f6"></div><div class="p" data-i="3" style="background:#f59e0b"></div></div></div>
+<script>
+const pads=[...document.querySelectorAll('.p')];let seq=[],i=0,lock=true,lv=0;
+const bestEl=document.getElementById('best');
+let best=+localStorage.getItem('rhythm_best_lv')||0;
+bestEl.textContent='最高轮次：'+(best||'--');
+function flash(n){pads[n].classList.add('on');setTimeout(()=>pads[n].classList.remove('on'),260);}
+function play(){lock=true;let t=0;seq.forEach(n=>{setTimeout(()=>flash(n),t);t+=430});setTimeout(()=>{lock=false;i=0;info.textContent='轮到你了';},t+150);}
+function next(){lv++;info.textContent='第 '+lv+' 轮';seq.push(Math.floor(Math.random()*4));play();}
+st.onclick=()=>{seq=[];lv=0;next();};
+pads.forEach(p=>p.onclick=()=>{if(lock)return;const n=+p.dataset.i;flash(n);if(n!==seq[i]){info.textContent='失败了，点击开始重来';if(lv>best){best=lv;localStorage.setItem('rhythm_best_lv',String(best));bestEl.textContent='最高轮次：'+best;}lock=true;return;}i++;if(i===seq.length)setTimeout(next,450);});
+__SC_END__
+</body></html>
+</script>
+
+<script type="text/plain" id="src-09">
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>迷你打字竞速</title>
+<style>
+body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.card{width:min(620px,92vw);background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);padding:20px;border-radius:14px}
+#target{font-size:20px;background:#0b1220;padding:12px;border-radius:10px;margin:10px 0}
+input{width:100%;padding:10px;border-radius:8px;border:0} button{margin-top:10px;padding:9px 14px;border:0;border-radius:8px;background:#38bdf8;cursor:pointer;transition:.2s transform,.2s opacity}
+button:hover{opacity:.92;transform:translateY(-1px)}
+</style></head>
+<body><div class="card"><h2>迷你打字竞速</h2><div id="target"></div><input id="in" placeholder="在这里输入"><button id="start">开始</button><p id="res"></p><p id="best">最佳速度：--</p></div>
+<script>
+const pool=['春风十里不如你','今晚月色真美','代码会说话创意会发光','慢慢来比较快','保持热爱奔赴山海'];let t0=0,text='';
+const bestEl=document.getElementById('best');
+const txt=document.getElementById('in');
+let best=+localStorage.getItem('typing_best_cpm')||0;
+bestEl.textContent='最佳速度：'+(best?best+' 字/分钟':'--');
+start.onclick=()=>{text=pool[Math.floor(Math.random()*pool.length)];target.textContent=text;txt.value='';txt.focus();res.textContent='开始计时...';t0=performance.now();};
+txt.oninput=()=>{
+  if(!text)return;
+  let ok=0;
+  for(let i=0;i<txt.value.length;i++) if(txt.value[i]===text[i]) ok++;
+  const acc=Math.round(ok/Math.max(1,txt.value.length)*100);
+  res.textContent='实时正确率：'+acc+'%';
+  if(txt.value===text){
+    const s=(performance.now()-t0)/1000,cpm=Math.round(text.length/s*60);
+    res.textContent=`完成！用时 ${s.toFixed(2)}s，速度 ${cpm} 字/分钟`;
+    if(cpm>best){best=cpm;localStorage.setItem('typing_best_cpm',String(best));bestEl.textContent='最佳速度：'+best+' 字/分钟';}
+    text='';
+  }
+};
+__SC_END__
+</body></html>
+</script>
+
+<script type="text/plain" id="src-10">
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>创意待办抽卡</title>
+<style>
+body{margin:0;display:grid;place-items:center;min-height:100vh;background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif}
+.card{width:min(560px,92vw);background:rgba(15,23,42,.72);backdrop-filter:blur(4px);box-shadow:0 12px 36px rgba(2,6,23,.45);padding:20px;border-radius:16px}
+input{width:70%;padding:10px;border-radius:8px;border:0} button{padding:10px 14px;border:0;border-radius:8px;background:#22d3ee;cursor:pointer;margin-left:6px;transition:.2s transform,.2s opacity}
+button:hover{opacity:.92;transform:translateY(-1px)}
+li{margin:8px 0;padding:8px;background:rgba(0,0,0,.2);border-radius:8px}
+@media (max-width:520px){input{width:100%;margin-bottom:8px}button{margin-left:0;margin-right:6px;margin-bottom:6px}}
+</style></head>
+<body><div class="card"><h2>创意待办抽卡</h2><input id="task" placeholder="输入待办"><button id="add">添加</button><button id="pick">随机抽一条</button><button id="clear">清空</button><ul id="list"></ul><p id="r"></p></div>
+<script>
+const arr=JSON.parse(localStorage.getItem('todo_cards')||'[]');
+function save(){localStorage.setItem('todo_cards',JSON.stringify(arr));}
+function render(){
+  list.innerHTML='';
+  arr.forEach((v,idx)=>{
+    const li=document.createElement('li');
+    li.textContent=v+'  （双击删除）';
+    li.ondblclick=()=>{arr.splice(idx,1);save();render();};
+    list.appendChild(li);
+  });
+}
+render();
+add.onclick=()=>{
+  const v=task.value.trim();
+  if(!v)return;
+  arr.push(v);
+  save();
+  render();
+  task.value='';
+  task.focus();
+};
+task.addEventListener('keydown',(e)=>{if(e.key==='Enter')add.click();});
+pick.onclick=()=>{if(!arr.length){r.textContent='先添加待办吧';return;}const t=arr[Math.floor(Math.random()*arr.length)];r.textContent='今日命运任务：'+t+' 🎯';};
+clear.onclick=()=>{arr.length=0;save();render();r.textContent='已清空';};
+__SC_END__
+</body></html>
+</script>
+
+<script>
+const GAMES = [
+  {"id":"01","icon":"⚡","name":"反应力挑战","desc":"等方块变绿的一瞬间点击，测测你的反应有多快","color":"#22d3ee"},
+  {"id":"02","icon":"🍉","name":"翻牌记忆小游戏","desc":"翻开卡片配成 8 组水果，步数越少越厉害","color":"#22c55e"},
+  {"id":"03","icon":"🎯","name":"猜数字心理战","desc":"1–100 猜中我想的数字，看最少几次能猜到","color":"#f43f5e"},
+  {"id":"04","icon":"👆","name":"手速点击王","desc":"10 秒内疯狂点击，冲击你的最高分","color":"#f59e0b"},
+  {"id":"05","icon":"🕹️","name":"躲避小方块","desc":"方向键操控绿块，躲开红色方块活得越久越好","color":"#38bdf8"},
+  {"id":"06","icon":"💬","name":"随机真心话","desc":"随机抽一个真心话问题，聚会破冰必备","color":"#c084fc"},
+  {"id":"07","icon":"🎰","name":"今日运势扭蛋机","desc":"扭一扭，看看今天能抽到什么运势","color":"#fbbf24"},
+  {"id":"08","icon":"🎨","name":"颜色节奏挑战","desc":"记住彩色方块闪烁的顺序，轮次越高越难","color":"#ef4444"},
+  {"id":"09","icon":"⌨️","name":"迷你打字竞速","desc":"照着屏幕打出句子，看看每分钟能打多少字","color":"#0ea5e9"},
+  {"id":"10","icon":"✅","name":"创意待办抽卡","desc":"把待办写进去随机抽一条，专治选择困难","color":"#14b8a6"}
+];
+
+function hexA(hex,a){
+  var n=parseInt(hex.replace('#',''),16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+
+document.getElementById('grid').innerHTML = GAMES.map(function(g){
+  return '<div class="card" role="button" tabindex="0" data-id="'+g.id+'" '
+       + 'style="--c:'+g.color+';--tint:'+hexA(g.color,.17)+';--tile:'+hexA(g.color,.20)+'" '
+       + 'aria-label="打开'+g.name+'">'
+       +   '<div class="row"><span class="ico">'+g.icon+'</span><span class="no">'+g.id+'</span></div>'
+       +   '<span class="name">'+g.name+'</span>'
+       +   '<span class="desc">'+g.desc+'</span>'
+       +   '<span class="go">开始 ▸</span>'
+       + '</div>';
+}).join('');
+
+/* ---------- 存档：把 iframe 内的 localStorage 转发到本页保存 ---------- */
+function storeKey(id){ return 'minigame_store_' + id; }
+function readStore(id){
+  try{ return JSON.parse(localStorage.getItem(storeKey(id)) || '{}') || {}; }
+  catch(e){ return {}; }
+}
+function writeStore(id,obj){
+  try{ localStorage.setItem(storeKey(id), JSON.stringify(obj)); }catch(e){}
+}
+
+window.addEventListener('message', function(ev){
+  var d = ev.data;
+  if(!d || d.__mg !== 1) return;
+  var st = readStore(d.id);
+  if(d.mode === 'clear'){ st = {}; }
+  else if(d.mode === 'del'){ delete st[d.key]; }
+  else if(d.key != null){ st[d.key] = d.value; }
+  writeStore(d.id, st);
+});
+
+/* 注入到游戏里的 localStorage 兼容层（在 iframe 内运行） */
+function SHIM(sid, DATA){
+  function post(mode, key, value){
+    try{ parent.postMessage({__mg:1, id:sid, mode:mode, key:key, value:value}, '*'); }catch(e){}
+  }
+  var shim = {
+    getItem: function(k){
+      k = String(k);
+      return Object.prototype.hasOwnProperty.call(DATA,k) ? DATA[k] : null;
+    },
+    setItem: function(k,v){
+      k = String(k); DATA[k] = String(v); post('set', k, String(v));
+    },
+    removeItem: function(k){
+      k = String(k); delete DATA[k]; post('del', k, null);
+    },
+    clear: function(){ DATA = {}; post('clear', null, null); },
+    key: function(i){
+      var ks = Object.keys(DATA);
+      return (i >= 0 && i < ks.length) ? ks[i] : null;
+    }
+  };
+  try{ Object.defineProperty(shim,'length',{ get: function(){ return Object.keys(DATA).length; } }); }catch(e){}
+  try{
+    Object.defineProperty(window,'localStorage',{ configurable:true, get:function(){ return shim; } });
+  }catch(e){
+    try{ window.localStorage = shim; }catch(e2){}
+  }
+}
+
+/* ---------- 打开 / 关闭游戏 ---------- */
+var overlay  = document.getElementById('overlay');
+var stage    = document.getElementById('stage');
+var ovTitle  = document.getElementById('ovTitle');
+var current  = null;
+
+function openGame(id){
+  var g = GAMES.filter(function(x){ return x.id === id; })[0];
+  if(!g) return;
+  var node = document.getElementById('src-' + id);
+  if(!node) return;
+
+  var raw  = node.textContent.split('__SC_END__').join('</scr'+'ipt>');
+  var data = JSON.stringify(readStore(id)).replace(/</g, '\\u003c');
+  var shim = '<scr'+'ipt>(' + SHIM.toString() + ')('
+           + JSON.stringify(String(id)) + ',' + data + ');</scr'+'ipt>';
+
+  /* 放在 </head> 前，既不挤掉 <meta charset>，又保证早于游戏脚本执行 */
+  var doc = raw.replace(/<\/head>/i, shim + '</head>');
+  if(doc === raw){
+    doc = raw.replace(/<head([^>]*)>/i, function(m, attrs){ return '<head' + attrs + '>' + shim; });
+  }
+  if(doc === raw){ doc = shim + raw; }
+
+  current = id;
+  ovTitle.innerHTML = '<span>' + g.icon + '</span><span>' + g.name + '</span>';
+  overlay.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  stage.removeAttribute('srcdoc');
+  stage.src = 'about:blank';
+  stage.srcdoc = doc;
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+
+function closeGame(){
+  overlay.classList.remove('on');
+  document.body.style.overflow = '';
+  stage.removeAttribute('srcdoc');
+  stage.src = 'about:blank';
+  current = null;
+}
+
+document.getElementById('grid').addEventListener('click', function(e){
+  var card = e.target.closest ? e.target.closest('.card') : null;
+  if(card) openGame(card.getAttribute('data-id'));
+});
+
+document.getElementById('grid').addEventListener('keydown', function(e){
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  var card = e.target.closest ? e.target.closest('.card') : null;
+  if(card){ e.preventDefault(); openGame(card.getAttribute('data-id')); }
+});
+
+document.getElementById('back').onclick = closeGame;
+
+/* 让键盘操作（空格 / 回车 / 方向键）直接作用于游戏 */
+stage.addEventListener('load', function(){
+  if(!current) return;
+  try{ stage.focus(); }catch(e){}
+  try{ stage.contentWindow.focus(); }catch(e){}
+});
+
+/* 全屏 */
+document.getElementById('fs').onclick = function(){
+  var el = overlay, d = document;
+  try{
+    if(!d.fullscreenElement && !d.webkitFullscreenElement){
+      (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
+    }else{
+      (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+    }
+  }catch(e){}
+};
+document.addEventListener('fullscreenchange', function(){
+  document.getElementById('fs').textContent = document.fullscreenElement ? '退出全屏' : '全屏';
+});
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && overlay.classList.contains('on')) closeGame();
+});
+</script>
+
+</body>
+</html>
